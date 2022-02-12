@@ -8,25 +8,20 @@ import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.common.base.Optional;
-
 public class App {
 
-    public static Set<String> ALL_WORDS;
+    public static Set<String> ALL_WORDS = readDictionaryFile("words_common.txt");
 
     public static void main(String[] args) throws Exception {
-        ALL_WORDS = readDictionaryFile("words_common.txt", Optional.of(5));
-
+        SimpleGame.play(5);
     }
 
-    public static Set<String> readDictionaryFile(String fileName, Optional<Integer> length) {
+    public static Set<String> readDictionaryFile(String fileName) {
         Set<String> words = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String word;
             while ((word = br.readLine()) != null) {
-                if (length.isPresent() && word.length() == length.get()) {
-                    words.add(word);
-                }
+                words.add(word);
             }
         } catch (Exception e) {
             throw new RuntimeException("Couldn't read dictionary.");
